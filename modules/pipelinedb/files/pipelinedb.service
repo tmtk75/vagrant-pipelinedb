@@ -1,0 +1,19 @@
+[Unit]
+Description=pipelinedb
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+EnvironmentFile=-/etc/sysconfig/pipelinedb
+Environment=
+Restart=on-failure
+User=vagrant
+Group=vagrant
+ExecStart=/usr/bin/pipeline-ctl -D $PIPELINEDB_HOME -l $PIPELINEDB_LOG_PATH start
+ExecStop=/usr/bin/pipeline-ctl -D $PIPELINEDB_HOME stop
+Type=forking
+ExecReload=/bin/kill -HUP $MAINPID
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target
